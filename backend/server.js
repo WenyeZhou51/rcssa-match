@@ -115,6 +115,36 @@ app.post('/api/users', async (req, res) => {
   logger.debug('User registration data:', req.body);
   
   try {
+    // First check if user with this email already exists
+    logger.debug('Checking for existing user with email:', req.body.email);
+    const existingUser = await User.findOne({ email: req.body.email });
+    
+    if (existingUser) {
+      logger.info('User with email already exists:', existingUser._id);
+      
+      if (existingUser.isMatched) {
+        logger.debug('Existing user is already matched');
+        const match = await User.findById(existingUser.matchedWith);
+        return res.json({
+          matched: true,
+          user: existingUser,
+          match: {
+            name: match.name,
+            email: match.email,
+            major: match.major,
+            graduationYear: match.graduationYear
+          }
+        });
+      } else {
+        logger.debug('Existing user is not matched yet');
+        return res.json({
+          matched: false,
+          user: existingUser
+        });
+      }
+    }
+    
+    // If user doesn't exist, create new user
     logger.debug('Creating new user instance');
     const newUser = new User(req.body);
     
@@ -160,7 +190,7 @@ app.post('/api/users', async (req, res) => {
       user: newUser
     });
   } catch (error) {
-    logger.error('Error creating user:', error);
+    logger.error('Error processing user:', error);
     logger.debug('Error details:', {
       name: error.name,
       code: error.code,
