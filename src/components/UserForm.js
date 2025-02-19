@@ -9,17 +9,77 @@ import {
 } from '@mui/material';
 
 const majors = [
+  // School of Architecture
+  'Architecture',
+  'Architectural Studies',
+
+  // George R. Brown School of Engineering
+  'Bioengineering',
+  'Chemical and Biomolecular Engineering',
+  'Civil and Environmental Engineering',
+  'Computational and Applied Mathematics',
   'Computer Science',
-  'Engineering',
+  'Electrical and Computer Engineering',
+  'Mechanical Engineering',
+  'Materials Science and Nanoengineering',
+  'Operations Research',
+  'Statistics',
+
+  // Jones Graduate School of Business
   'Business',
-  'Mathematics',
-  'Physics',
+
+  // School of Humanities
+  'Ancient Mediterranean Civilizations',
+  'Art History',
+  'Asian Studies',
+  'Classical Studies',
+  'English',
+  'European Studies',
+  'French Studies',
+  'German Studies',
+  'History',
+  'Latin American Studies',
+  'Medieval and Early Modern Studies',
+  'Philosophy',
+  'Religion',
+  'Spanish and Portuguese',
+  'Study of Women, Gender, and Sexuality',
+  'Visual and Dramatic Arts',
+
+  // Shepherd School of Music
+  'Music',
+
+  // Wiess School of Natural Sciences
+  'Astronomy',
+  'Astrophysics',
+  'Biochemistry and Cell Biology',
+  'Biological Sciences',
+  'BioSciences',
+  'Chemical Physics',
   'Chemistry',
-  'Biology',
-  'Psychology',
+  'Earth, Environmental, and Planetary Sciences',
+  'Ecology and Evolutionary Biology',
+  'Environmental Science',
+  'Health Sciences',
+  'Kinesiology',
+  'Mathematics',
+  'Neuroscience',
+  'Physics',
+  'Sports Medicine and Exercise Physiology',
+
+  // School of Social Sciences
+  'Anthropology',
+  'Cognitive Sciences',
   'Economics',
-  'Other'
+  'Linguistics',
+  'Mathematical Economic Analysis',
+  'Political Science',
+  'Psychology',
+  'Social Policy Analysis',
+  'Sociology',
+  'Sport Management'
 ];
+
 
 const graduationYears = Array.from({ length: 6 }, (_, i) => new Date().getFullYear() + i);
 
@@ -75,7 +135,7 @@ function UserForm({ onSubmit }) {
   return (
     <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
       <Typography component="h1" variant="h4" align="center" gutterBottom>
-        Find Your Study Buddy
+        RCSSA Big-Little Matching
       </Typography>
       <Typography variant="body1" align="center" color="text.secondary" sx={{ mb: 4 }}>
         Connect with fellow students in your major
