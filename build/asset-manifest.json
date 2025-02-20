@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/rcssa-match/static/js/main.99e52348.js",
+    "main.js": "/rcssa-match/static/js/main.02c814f6.js",
     "index.html": "/rcssa-match/index.html",
-    "main.99e52348.js.map": "/rcssa-match/static/js/main.99e52348.js.map"
+    "main.02c814f6.js.map": "/rcssa-match/static/js/main.02c814f6.js.map"
   },
   "entrypoints": [
-    "static/js/main.99e52348.js"
+    "static/js/main.02c814f6.js"
   ]
 }
