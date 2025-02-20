@@ -301,23 +301,59 @@ app.use((error, req, res, next) => {
   
   if (error.name === 'MongoServerError' && error.code === 11000) {
     // Handle duplicate key errors
-    return res.status(400).json({
-      error: 'A user with this email or netId already exists.'
+    const duplicateField = Object.keys(error.keyPattern)[0];
+    if (duplicateField === 'email') {
+      // Find the existing user with this email
+      User.findOne({ email: error.keyValue.email })
+        .then(existingUser => {
+          if (existingUser.isMatched) {
+            // If user is already matched, return match info
+            User.findById(existingUser.matchedWith)
+              .then(match => {
+                return res.json({
+                  matched: true,
+                  user: existingUser,
+                  match: {
+                    name: match.name,
+                    email: match.email,
+                    major: match.major,
+                    graduationYear: match.graduationYear
+                  }
+                });
+              })
+              .catch(err => {
+                logger.error('Error finding match:', err);
+                return res.status(500).json({
+                  error: 'An error occurred while retrieving match information.'
+                });
+              });
+          } else {
+            // If user exists but is not matched, return waiting state
+            return res.json({
+              matched: false,
+              user: existingUser
+            });
+          }
+        })
+        .catch(err => {
+          logger.error('Error finding existing user:', err);
+          return res.status(500).json({
+            error: 'An error occurred while retrieving user information.'
+          });
+        });
+    } else {
+      // Handle other duplicate key errors
+      return res.status(400).json({
+        error: `A user with this ${duplicateField} already exists.`
+      });
+    }
+  } else {
+    // Handle other types of errors
+    res.status(500).json({
+      error: 'An unexpected error occurred.',
+      details: error.message
     });
   }
-  
-  if (error.name === 'ValidationError') {
-    // Handle mongoose validation errors
-    return res.status(400).json({
-      error: 'Validation error',
-      details: Object.values(error.errors).map(err => err.message)
-    });
-  }
-  
-  // Handle other errors
-  res.status(500).json({
-    error: 'An unexpected error occurred. Please try again.'
-  });
 });
 
 const PORT = process.env.PORT || 5000;
